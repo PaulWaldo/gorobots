@@ -17,8 +17,18 @@ func Test_Scan_ReturnsClosestRobot(t *testing.T) {
 	degree := 0
 	resolution := 0
 	r := Robot{}
-	got := r.Scan(0, 0)
+	got := r.Scan(degree, resolution)
 	if got != want {
 		t.Errorf("Scan(%v, %v) = %v, want %v", degree, resolution, got, want)
+	}
+}
+func Test_Canon_ReturnsWhetherMissileWasFired(t *testing.T) {
+	want := true
+	distance := 0
+	degree := 0
+	r := Robot{}
+	got := r.Canon(degree, distance)
+	if got != want {
+		t.Errorf("Canon(%v, %v) = %v, want %v", degree, distance, got, want)
 	}
 }

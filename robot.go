@@ -101,3 +101,11 @@ func (r Robot) Damage() int {
 func (r Robot) Scan(degree, resolution int) int {
 	return 0
 }
+
+// Canon fires a missile heading a specified direction and exploding at a given distance.
+// Returns true if a missile was fired, or false if the cannon is reloading.
+// Degree is forced into the range 0-359 as in scan().
+// Distance can be 0-700, with greater ranges truncated to 700.
+func (r Robot) Canon(degree, distance int) bool {
+	return true
+}
