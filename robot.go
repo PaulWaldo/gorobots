@@ -86,6 +86,18 @@ type Robot struct {
 	damage int
 }
 
+// Damage returns the current percent of damage incurred, 0-99.
+// 100 percent damage means the robot is completely disabled, thus no longer running
 func (r Robot) Damage() int {
 	return r.damage
+}
+
+// Scan invokes the robot's scanner, at a specified degree and resolution.
+// Returns 0 if no robots are within the scan range or a positive integer representing the
+// range to the closest robot.
+// Degree should be within the range 0-359, otherwise degree is forced into 0-359 by a
+// modulo 360 operation, and made positive if necessary.
+// Resolution controls the scanner's sensing resolution, up to +/- 10 degrees.
+func (r Robot) Scan(degree, resolution int) int {
+	return 0
 }
