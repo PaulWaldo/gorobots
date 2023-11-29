@@ -32,3 +32,9 @@ func Test_Canon_ReturnsWhetherMissileWasFired(t *testing.T) {
 		t.Errorf("Canon(%v, %v) = %v, want %v", degree, distance, got, want)
 	}
 }
+func Test_Drive_RecordsParameters(t *testing.T) {
+	speed := 0
+	degree := 0
+	r := Robot{}
+	r.Drive(degree, speed)
+}

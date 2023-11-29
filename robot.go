@@ -109,3 +109,10 @@ func (r Robot) Scan(degree, resolution int) int {
 func (r Robot) Canon(degree, distance int) bool {
 	return true
 }
+
+// Drive activates the robot's drive mechanism, on a specified heading and speed.
+// Degree is forced into the range 0-359.
+// Speed is expressed as a percent, with 100 as maximum. A speed of 0 disengages the drive.
+// Changes in direction can be negotiated at speeds of less than 50 percent.
+func (r Robot) Drive(degree, speed int) {
+}
