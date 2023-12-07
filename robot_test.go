@@ -32,9 +32,40 @@ func Test_Canon_ReturnsWhetherMissileWasFired(t *testing.T) {
 		t.Errorf("Canon(%v, %v) = %v, want %v", degree, distance, got, want)
 	}
 }
-func Test_Drive_RecordsParameters(t *testing.T) {
-	speed := 0
-	degree := 0
-	r := Robot{}
+
+type mockController struct {
+	driveMock func(r *Robot, degree, speed int)
+}
+
+func (mc mockController) Drive(r *Robot, degree, speed int) {
+	mc.driveMock(r, degree, speed)
+}
+
+func Test_Drive_RecordsParameter(t *testing.T) {
+	speed := 30
+	degree := 45
+
+	c := mockController{
+		driveMock: func(r *Robot, degree, speed int) {
+			r.moveDegree = degree
+			r.moveSpeed = speed
+		},
+	}
+	r := Robot{controller: c}
 	r.Drive(degree, speed)
+
+	t.Run("degree", func(t *testing.T) {
+		want := degree
+		got := r.moveDegree
+		if got != want {
+			t.Errorf("Drive(%v, %v) moveDegree = %v, want %v", degree, speed, got, want)
+		}
+	})
+	t.Run("speed", func(t *testing.T) {
+		want := speed
+		got := r.moveSpeed
+		if got != want {
+			t.Errorf("Drive(%v, %v) moveSpeed = %v, want %v", degree, speed, got, want)
+		}
+	})
 }
