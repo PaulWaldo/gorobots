@@ -1,7 +1,13 @@
 package main
 
-type controller interface {
+type Controller interface {
 	driver
+}
+
+type controller struct{}
+
+func (c controller) Drive(r *Robot, degree, speed int){
+
 }
 
 type driver interface {
