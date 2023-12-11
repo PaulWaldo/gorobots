@@ -118,5 +118,7 @@ func (r Robot) Canon(degree, distance int) bool {
 // Speed is expressed as a percent, with 100 as maximum. A speed of 0 disengages the drive.
 // Changes in direction can be negotiated at speeds of less than 50 percent.
 func (r *Robot) Drive(degree, speed int) {
-	r.controller.Drive(r, degree, speed)
+	// r.controller.Drive(r, degree, speed)
+	r.moveDegree=degree
+	r.moveSpeed=speed
 }
