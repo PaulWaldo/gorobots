@@ -83,10 +83,17 @@ package main
 // These functions provide trigonometric values. sin(), cos(), and tan(), take a degree argument, 0-359, and returns the trigonometric value times 100,000. The scaling is necessary since the CROBOT cpu is an integer only machine, and trig values are between 0.0 and 1.0. atan() takes a ratio argument that has been scaled up by 100,000, and returns a degree value, between -90 and +90. The resulting calculation should not be scaled to the actual value until the final operation, as not to lose accuracy. See programming examples for usage.
 
 type Robot struct {
-	controller Controller
-	damage     int
-	moveDegree int
-	moveSpeed  int
+	controller    Controller
+	damage        int
+	moveAngle     float64
+	moveSpeed     float64
+	currentSpeedX float64 // in units per second (x-axis)
+	currentSpeedY float64 // in units per second (y-axis)
+	// angle         float64 // in degrees
+	acceleration float64 // in units per second squared
+	maxSpeed     float64 // in units per second
+	posX         float64
+	posY         float64
 }
 
 // Damage returns the current percent of damage incurred, 0-99.
@@ -119,6 +126,6 @@ func (r Robot) Canon(degree, distance int) bool {
 // Changes in direction can be negotiated at speeds of less than 50 percent.
 func (r *Robot) Drive(degree, speed int) {
 	// r.controller.Drive(r, degree, speed)
-	r.moveDegree=degree
-	r.moveSpeed=speed
+	r.moveAngle = float64(degree)
+	r.moveSpeed = float64(speed)
 }
