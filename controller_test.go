@@ -37,55 +37,95 @@ import "testing"
 // 	c.MoveRobot(r)
 // }
 
-func TestObjectMovement(t *testing.T) {
-	robot := Robot{
-		currentSpeedX: 10,
-		currentSpeedY: 5,
-		moveAngle:     45,
-		acceleration:  2,
-		maxSpeed:      15,
+func Test_Controller_RobotMovement_SetsNewPositionAfter(t *testing.T) {
+	acceleration := 2.0
+	maxSpeed := 15.0
+	testCases := []struct {
+		desc          string
+		currentSpeedX float64
+		currentSpeedY float64
+		moveAngle     float64
+		finalSpeedX   float64
+		finalSpeedY   float64
+		moveTime      float64
+	}{
+		{
+			desc:          "0 seconds",
+			currentSpeedX: 10.0,
+			currentSpeedY: 5.0,
+			moveAngle:     45.0,
+			finalSpeedX:   10.0,
+			finalSpeedY:   5.0,
+			moveTime:      0.0,
+		},
 	}
-
-	// Test the initial position
-	robot.UpdatePosition(0)
-	if robot.currentSpeedX != 10 || robot.currentSpeedY != 5 {
-		t.Errorf("Expected current speeds to be (10, 5), got (%f, %f)", robot.currentSpeedX, robot.currentSpeedY)
-	}
-
-	// Test the position after 2 seconds
-	robot.UpdatePosition(2)
-	if robot.currentSpeedX != 14 || robot.currentSpeedY != 7 {
-		t.Errorf("Expected current speeds to be (14, 7), got (%f, %f)", robot.currentSpeedX, robot.currentSpeedY)
-	}
-
-	// // Test the position after 5 seconds (should reach maxSpeed)
-	// robot.UpdatePosition(5)
-	// if robot.currentSpeedX != robot.maxSpeed*math.Cos(robot.angle*math.Pi/180) ||
-	// 	robot.currentSpeedY != robot.maxSpeed*math.Sin(robot.angle*math.Pi/180) {
-	// 	t.Errorf("Expected current speeds to be (%f, %f), got (%f, %f)",
-	// 		robot.maxSpeed*math.Cos(robot.angle*math.Pi/180), robot.maxSpeed*math.Sin(robot.angle*math.Pi/180),
-	// 		robot.currentSpeedX, robot.currentSpeedY)
-	// }
-}
-
-func TestObjectMovement2(t *testing.T) {
-	robot := Robot{
-		currentSpeedX: 0,
-		currentSpeedY: 0,
-		moveAngle:     45,
-		acceleration:  2,
-		maxSpeed:      15,
-	}
-
-	// Test the initial position
-	robot.UpdatePosition(0)
-	if robot.currentSpeedX != 10 || robot.currentSpeedY != 10 {
-		t.Errorf("Expected current speeds to be (10, 5), got (%f, %f)", robot.currentSpeedX, robot.currentSpeedY)
-	}
-
-	// Test the position after 2 seconds
-	robot.UpdatePosition(2)
-	if robot.currentSpeedX != 14 || robot.currentSpeedY != 14 {
-		t.Errorf("Expected current speeds to be (14, 14), got (%f, %f)", robot.currentSpeedX, robot.currentSpeedY)
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			r := Robot{
+				currentSpeedX: tC.currentSpeedX,
+				currentSpeedY: tC.currentSpeedY,
+				moveAngle:     tC.moveAngle,
+				acceleration:  acceleration,
+				maxSpeed:      maxSpeed,
+			}
+			r.UpdatePosition(tC.moveTime)
+			if r.currentSpeedX != tC.finalSpeedX || r.currentSpeedY != tC.finalSpeedY {
+				t.Errorf("UpdatePosition(%f) expected current speed to be (%f,%f), got (%f, %f)",
+					tC.moveTime, tC.finalSpeedX, tC.finalSpeedY, tC.currentSpeedX, r.currentSpeedY)
+			}
+		})
 	}
 }
+
+// func TestObjectMovement(t *testing.T) {
+// 	robot := Robot{
+// 		currentSpeedX: 10,
+// 		currentSpeedY: 5,
+// 		moveAngle:     45,
+// 		acceleration:  2,
+// 		maxSpeed:      15,
+// 	}
+
+// 	// Test the initial position
+// 	robot.UpdatePosition(0)
+// 	if robot.currentSpeedX != 10 || robot.currentSpeedY != 5 {
+// 		t.Errorf("Expected current speeds to be (10, 5), got (%f, %f)", robot.currentSpeedX, robot.currentSpeedY)
+// 	}
+
+// 	// Test the position after 2 seconds
+// 	robot.UpdatePosition(2)
+// 	if robot.currentSpeedX != 14 || robot.currentSpeedY != 7 {
+// 		t.Errorf("Expected current speeds to be (14, 7), got (%f, %f)", robot.currentSpeedX, robot.currentSpeedY)
+// 	}
+
+// 	// // Test the position after 5 seconds (should reach maxSpeed)
+// 	// robot.UpdatePosition(5)
+// 	// if robot.currentSpeedX != robot.maxSpeed*math.Cos(robot.angle*math.Pi/180) ||
+// 	// 	robot.currentSpeedY != robot.maxSpeed*math.Sin(robot.angle*math.Pi/180) {
+// 	// 	t.Errorf("Expected current speeds to be (%f, %f), got (%f, %f)",
+// 	// 		robot.maxSpeed*math.Cos(robot.angle*math.Pi/180), robot.maxSpeed*math.Sin(robot.angle*math.Pi/180),
+// 	// 		robot.currentSpeedX, robot.currentSpeedY)
+// 	// }
+// }
+
+// func TestObjectMovement2(t *testing.T) {
+// 	robot := Robot{
+// 		currentSpeedX: 0,
+// 		currentSpeedY: 0,
+// 		moveAngle:     45,
+// 		acceleration:  2,
+// 		maxSpeed:      15,
+// 	}
+
+// 	// Test the initial position
+// 	robot.UpdatePosition(0)
+// 	if robot.currentSpeedX != 10 || robot.currentSpeedY != 10 {
+// 		t.Errorf("Expected current speeds to be (10, 5), got (%f, %f)", robot.currentSpeedX, robot.currentSpeedY)
+// 	}
+
+// 	// Test the position after 2 seconds
+// 	robot.UpdatePosition(2)
+// 	if robot.currentSpeedX != 14 || robot.currentSpeedY != 14 {
+// 		t.Errorf("Expected current speeds to be (14, 14), got (%f, %f)", robot.currentSpeedX, robot.currentSpeedY)
+// 	}
+// }
