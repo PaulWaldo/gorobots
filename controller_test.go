@@ -1,6 +1,12 @@
 package main
 
-import "testing"
+import (
+	"math"
+	"testing"
+
+	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
+)
 
 // func Test_Drive_RecordsParameter(t *testing.T) {
 // 	speed := 30
@@ -37,6 +43,8 @@ import "testing"
 // 	c.MoveRobot(r)
 // }
 
+const sqrt2 = math.Sqrt2
+
 func Test_Controller_RobotMovement_SetsNewPositionAfter(t *testing.T) {
 	acceleration := 2.0
 	maxSpeed := 15.0
@@ -58,6 +66,24 @@ func Test_Controller_RobotMovement_SetsNewPositionAfter(t *testing.T) {
 			finalSpeedY:   5.0,
 			moveTime:      0.0,
 		},
+		{
+			desc:          "1 seconds",
+			currentSpeedX: 10.0,
+			currentSpeedY: 5.0,
+			moveAngle:     45.0,
+			finalSpeedX:   10.0 + 1*math.Sqrt2,
+			finalSpeedY:   5.0 + 1*math.Sqrt2,
+			moveTime:      1.0,
+		},
+		{
+			desc:          "2 seconds",
+			currentSpeedX: 10.0,
+			currentSpeedY: 5.0,
+			moveAngle:     45.0,
+			finalSpeedX:   10.0 + 2*math.Sqrt2,
+			finalSpeedY:   5.0 + 2*math.Sqrt2,
+			moveTime:      2.0,
+		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
@@ -69,9 +95,10 @@ func Test_Controller_RobotMovement_SetsNewPositionAfter(t *testing.T) {
 				maxSpeed:      maxSpeed,
 			}
 			r.UpdatePosition(tC.moveTime)
-			if r.currentSpeedX != tC.finalSpeedX || r.currentSpeedY != tC.finalSpeedY {
-				t.Errorf("UpdatePosition(%f) expected current speed to be (%f,%f), got (%f, %f)",
-					tC.moveTime, tC.finalSpeedX, tC.finalSpeedY, tC.currentSpeedX, r.currentSpeedY)
+			opts := cmpopts.EquateApprox(0, 0.001)
+			if !cmp.Equal(r.currentSpeedX, tC.finalSpeedX, opts) || !cmp.Equal(r.currentSpeedY, tC.finalSpeedY, opts) {
+				t.Errorf("UpdatePosition(%0.2f) expected current speed to be (%0.2f, %0.2f), got (%0.2f, %0.2f)",
+					tC.moveTime, tC.finalSpeedX, tC.finalSpeedY, r.currentSpeedX, r.currentSpeedY)
 			}
 		})
 	}
