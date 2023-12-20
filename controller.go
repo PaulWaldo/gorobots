@@ -1,11 +1,10 @@
 package main
 
-
 type Controller interface {
 	// driver
 }
 
-type controller struct{}
+type control struct{}
 
 // func (c controller) Drive(r *Robot, degree, speed int){
 
@@ -20,11 +19,18 @@ func (r *Robot) UpdatePosition(timeInSeconds int) {
 	// // Convert angle to radians
 	// radians := r.moveAngle * (math.Pi / 180)
 
-	// // Update speeds based on acceleration
-	// r.currentSpeedX += r.acceleration * timeInSeconds * math.Cos(radians)
-	// r.currentSpeedY += r.acceleration * timeInSeconds * math.Sin(radians)
+	// Update speeds based on acceleration
+	r.currentSpeedX += r.acceleration * timeInSeconds
+	r.currentSpeedY += r.acceleration * timeInSeconds
 
-	// // Limit speeds to the maximum speed
+	// Limit speeds to the maximum speed
+	if r.currentSpeedX > r.maxSpeed {
+		r.currentSpeedX = r.maxSpeed
+	}
+	if r.currentSpeedY > r.maxSpeed {
+		r.currentSpeedY = r.maxSpeed
+	}
+
 	// speedMagnitude := math.Sqrt(math.Pow(r.currentSpeedX, 2) + math.Pow(r.currentSpeedY, 2))
 	// if speedMagnitude > r.maxSpeed {
 	// 	scaleFactor := r.maxSpeed / speedMagnitude
@@ -32,7 +38,7 @@ func (r *Robot) UpdatePosition(timeInSeconds int) {
 	// 	r.currentSpeedY *= scaleFactor
 	// }
 
-	// // Update position based on speeds
-	// r.posX = r.currentSpeedX * timeInSeconds
-	// r.posY = r.currentSpeedY * timeInSeconds
+	// Update position based on speeds
+	r.posX = r.currentSpeedX * timeInSeconds
+	r.posY = r.currentSpeedY * timeInSeconds
 }

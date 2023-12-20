@@ -91,10 +91,10 @@ type Robot struct {
 	currentSpeedX  int // in units per second (x-axis)
 	currentSpeedY  int // in units per second (y-axis)
 	// angle         float64 // in degrees
-	acceleration float64 // in units per second squared
-	maxSpeed     float64 // in units per second
-	posX         float64
-	posY         float64
+	acceleration int // in units per second squared
+	maxSpeed     int // in units per second
+	posX         int
+	posY         int
 }
 
 // Damage returns the current percent of damage incurred, 0-99.
@@ -130,4 +130,3 @@ func (r Robot) Canon(degree, distance int) bool {
 // 	r.moveAngle = float64(degree)
 // 	r.moveSpeed = float64(speed)
 // }
-
