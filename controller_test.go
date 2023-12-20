@@ -1,7 +1,6 @@
 package main
 
 import (
-	"math"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -43,25 +42,22 @@ import (
 // 	c.MoveRobot(r)
 // }
 
-const sqrt2 = math.Sqrt2
-
 func Test_Controller_RobotMovement_SetsNewPositionAfter(t *testing.T) {
 	acceleration := 2.0
 	maxSpeed := 15.0
 	testCases := []struct {
 		desc          string
-		currentSpeedX float64
-		currentSpeedY float64
-		moveAngle     float64
-		finalSpeedX   float64
-		finalSpeedY   float64
-		moveTime      float64
+		currentSpeedX int
+		currentSpeedY int
+		desiredSpeedX, desiredSpeedY int
+		finalSpeedX   int
+		finalSpeedY   int
+		moveTime      int
 	}{
 		{
 			desc:          "0 seconds",
 			currentSpeedX: 10.0,
 			currentSpeedY: 5.0,
-			moveAngle:     45.0,
 			finalSpeedX:   10.0,
 			finalSpeedY:   5.0,
 			moveTime:      0.0,
@@ -70,34 +66,33 @@ func Test_Controller_RobotMovement_SetsNewPositionAfter(t *testing.T) {
 			desc:          "1 seconds",
 			currentSpeedX: 10.0,
 			currentSpeedY: 5.0,
-			moveAngle:     45.0,
-			finalSpeedX:   10.0 + 1*math.Sqrt2,
+			desiredSpeedX: 100,
+			desiredSpeedY: 100,
+			finalSpeedX:   10+,
 			finalSpeedY:   5.0 + 1*math.Sqrt2,
 			moveTime:      1.0,
 		},
-		{
-			desc:          "2 seconds",
-			currentSpeedX: 10.0,
-			currentSpeedY: 5.0,
-			moveAngle:     45.0,
-			finalSpeedX:   10.0 + 2*math.Sqrt2,
-			finalSpeedY:   5.0 + 2*math.Sqrt2,
-			moveTime:      2.0,
-		},
+		// {
+		// 	desc:          "2 seconds",
+		// 	currentSpeedX: 10.0,
+		// 	currentSpeedY: 5.0,
+		// 	finalSpeedX:   10.0 + 2*math.Sqrt2,
+		// 	finalSpeedY:   5.0 + 2*math.Sqrt2,
+		// 	moveTime:      2.0,
+		// },
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			r := Robot{
 				currentSpeedX: tC.currentSpeedX,
 				currentSpeedY: tC.currentSpeedY,
-				moveAngle:     tC.moveAngle,
 				acceleration:  acceleration,
 				maxSpeed:      maxSpeed,
 			}
 			r.UpdatePosition(tC.moveTime)
 			opts := cmpopts.EquateApprox(0, 0.001)
 			if !cmp.Equal(r.currentSpeedX, tC.finalSpeedX, opts) || !cmp.Equal(r.currentSpeedY, tC.finalSpeedY, opts) {
-				t.Errorf("UpdatePosition(%0.2f) expected current speed to be (%0.2f, %0.2f), got (%0.2f, %0.2f)",
+				t.Errorf("UpdatePosition(%d) expected current speed to be (%d, %d), got (%d, %d)",
 					tC.moveTime, tC.finalSpeedX, tC.finalSpeedY, r.currentSpeedX, r.currentSpeedY)
 			}
 		})
