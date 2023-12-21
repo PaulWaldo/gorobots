@@ -2,45 +2,7 @@ package main
 
 import (
 	"testing"
-
-	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
 )
-
-// func Test_Drive_RecordsParameter(t *testing.T) {
-// 	speed := 30
-// 	degree := 45
-
-// 	// c := mockController{
-// 	// 	driveMock: func(r *Robot, degree, speed int) {
-// 	// 		r.moveDegree = degree
-// 	// 		r.moveSpeed = speed
-// 	// 	},
-// 	// }
-// 	c:=controller{}
-// 	r := Robot{controller: c}
-// 	r.Drive(degree, speed)
-
-// 	t.Run("degree", func(t *testing.T) {
-// 		want := degree
-// 		got := r.moveDegree
-// 		if got != want {
-// 			t.Errorf("Drive(%v, %v) moveDegree = %v, want %v", degree, speed, got, want)
-// 		}
-// 	})
-// 	t.Run("speed", func(t *testing.T) {
-// 		want := speed
-// 		got := r.moveSpeed
-// 		if got != want {
-// 			t.Errorf("Drive(%v, %v) moveSpeed = %v, want %v", degree, speed, got, want)
-// 		}
-// 	})
-// }
-// func Test_Controller_MoveRobot(t *testing.T) {
-// 	c := controller{}
-// 	r := Robot{}
-// 	c.MoveRobot(r)
-// }
 
 func Test_Controller_RobotMovement_SetsNewPositionAfter(t *testing.T) {
 	acceleration := 2
@@ -102,8 +64,7 @@ func Test_Controller_RobotMovement_SetsNewPositionAfter(t *testing.T) {
 				maxSpeed:      maxSpeed,
 			}
 			r.UpdatePosition(tC.moveTime)
-			opts := cmpopts.EquateApprox(0, 001)
-			if !cmp.Equal(r.currentSpeedX, tC.finalSpeedX, opts) || !cmp.Equal(r.currentSpeedY, tC.finalSpeedY, opts) {
+			if r.currentSpeedX != tC.finalSpeedX || r.currentSpeedY != tC.finalSpeedY {
 				t.Errorf("UpdatePosition(%d) expected current speed to be (%d, %d), got (%d, %d)",
 					tC.moveTime, tC.finalSpeedX, tC.finalSpeedY, r.currentSpeedX, r.currentSpeedY)
 			}
